@@ -45,7 +45,7 @@ duke_forest |>
   mutate(garage = if_else(str_detect(parking, "Garage"),   "Garage", "No garage")) |>
   mutate(price_thousands = price/1000) |>
   ggplot(aes(x=price_thousands, fill = garage)) +
-  geom_histogram(binwidth = 100) +
+  geom_histogram(binwidth = 200) +
   facet_wrap(vars(garage)) +
   theme_classic() +
   theme(legend.position = "none",
@@ -54,7 +54,7 @@ duke_forest |>
   labs(x="Listing Price (Thousands $)",
        y= "Number of Houses on Market",
        title = "Comparison of Prices of Houses with or without Garages",
-       subtitle = "Duke Forest Neighbourhood, Durham, NC, Novemeber 2020")
+       subtitle = "Duke Forest Neighbourhood, Durham, NC, November 2020")
 
 
 ```
@@ -83,13 +83,33 @@ Once again, data visualization skills to the rescue!
     -   Claim 2: Newer houses are priced higher.
     -   Claim 3: Bigger and more expensive houses tend to be newer ones than smaller and cheaper ones.
 
-```{r}
+```{r, warning=FALSE}
 #| label: price-area
+#| fig-cap: "Figure 2. Comparison of house listing price vs. square footage considering year of construction."
 
-# add code here
+duke_forest |>
+  mutate(price_thousands = price / 1000) |>
+ggplot(aes(x=area, y=price_thousands, fill=year_built)) +
+  geom_point(shape=21, size = 4, stroke=1, alpha = 0.6) +
+  geom_smooth(se=FALSE, color="darkblue", linewidth=0.3) +
+  scale_fill_viridis_c(option = "D",) +
+  theme_classic() +
+  labs(x = "House Area (Square Feet)",
+       y = "List Price ($, Thousands)",
+       title = "Comparison of House Area with List Price and Year of Construction",
+       subtitle = "Duke Forest Neighbourhood, Durham, NC, November 2020",
+       fill = "Year Built")
+
+
 ```
+### Claim 1: Larger houses are priced higher
+The plot supports the claim that, in general, the housing prices increase with square footage, at least up to 4000 sq ft. At this point, the data because highly variable suggesting another factor is at play.
 
-Add narrative here...
+### Claim 2: Newer houses are priced higher.
+It is not obvious in the plot that newer prices are priced higher. I would say that the plot does not support this data
+### Claim 3: Bigger and more expensive houses tend to be newer ones than smaller and cheaper ones.
+The biggest and most expensive homes do appear to be mostly built between 1975-2000, but there are also also many newer homes that are very cheap. Therefore I think it would be more accurate to say that the biggest and most expensive homes are rarely *older* than 25 years.
+
 
 ::: callout-important
 Now is a good time to render, commit, and push.
