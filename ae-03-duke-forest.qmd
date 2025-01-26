@@ -1,5 +1,8 @@
 ---
 title: "AE 03: Duke Forest + data visualization"
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r}
@@ -36,11 +39,27 @@ duke_forest |>
 
 ```{r}
 #| label: price-garage
+#| fig-cap: "Figure 1. Comparison of listing prices for houses with and without garages in the Duke Forest neighbourhood of Durham, NC, in 2020."
 
-# add code here
+duke_forest |>
+  mutate(garage = if_else(str_detect(parking, "Garage"),   "Garage", "No garage")) |>
+  mutate(price_thousands = price/1000) |>
+  ggplot(aes(x=price_thousands, fill = garage)) +
+  geom_histogram(binwidth = 200) +
+  facet_wrap(vars(garage)) +
+  theme_classic() +
+  theme(legend.position = "none",
+        panel.spacing = unit(0.5, "cm"),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")) +
+  labs(x="Listing Price (Thousands $)",
+       y= "Number of Houses on Market",
+       title = "Comparison of Prices of Houses with or without Garages",
+       subtitle = "Duke Forest Neighbourhood, Durham, NC, November 2020")
+
+
 ```
 
-Add narrative here...
+In comparing the histograms of prices of houses with and without a garage in Figure 1, there are a few interesting observations. Houses with garages are quite concentrated around $500k in price, with a skew to the right of more luxury homes. In contrast, houses without garages are more dispersed, and shows a notable increase in houses below \$400k, and a lighter right tail of expensive homes. Therefore, I think we can conclude that, in general, houses without a garage are more variable in price and tend can tend towards lower prices, while houses with a garage are more likely to sell for an average price or more.
 
 ::: callout-important
 Now is a good time to render, commit, and push.
@@ -64,13 +83,34 @@ Once again, data visualization skills to the rescue!
     -   Claim 2: Newer houses are priced higher.
     -   Claim 3: Bigger and more expensive houses tend to be newer ones than smaller and cheaper ones.
 
-```{r}
+```{r, warning=FALSE}
 #| label: price-area
+#| fig-cap: "Figure 2. Comparison of house listing price vs. square footage considering year of construction."
 
-# add code here
+duke_forest |>
+  mutate(price_thousands = price / 1000) |>
+ggplot(aes(x=area, y=price_thousands, fill=year_built)) +
+  geom_point(shape=21, size = 4, stroke=1, alpha = 0.6) +
+  geom_smooth(se=FALSE, color="darkblue", linewidth=0.3) +
+  scale_fill_viridis_c(option = "D",) +
+  theme_classic() +
+  labs(x = "House Area (Square Feet)",
+       y = "List Price ($, Thousands)",
+       title = "Comparison of House Area with List Price and Year of Construction",
+       subtitle = "Duke Forest Neighbourhood, Durham, NC, November 2020",
+       fill = "Year Built")
+
+
 ```
+### Claim 1: Larger houses are priced higher
+The plot supports the claim that, in general, the housing prices increase with square footage, at least up to 4000 sq ft. Higher than this point, the data because highly variable suggesting another factor is at play.
 
-Add narrative here...
+### Claim 2: Newer houses are priced higher.
+It is not obvious in the plot that newer prices are priced higher. I would say that the plot does not support this data. Many of the newer homes (yellower) appear to be very average for their area, as in, right on the trend line. This suggest that newer homes represent the base prince and older homes can either increase in value (if they have a nice historic character and are maintained), or decrease in value (their style falls out of fashion or are not kept in good repair)
+
+### Claim 3: Bigger and more expensive houses tend to be newer ones than smaller and cheaper ones.
+The biggest and most expensive homes do appear to be mostly built between 1975-2000, but there are also also many newer homes that are very cheap. Therefore I think it would be more accurate to say that the biggest and most expensive homes are rarely *older* than 25 years.
+
 
 ::: callout-important
 Now is a good time to render, commit, and push.
