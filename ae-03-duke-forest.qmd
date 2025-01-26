@@ -103,10 +103,11 @@ ggplot(aes(x=area, y=price_thousands, fill=year_built)) +
 
 ```
 ### Claim 1: Larger houses are priced higher
-The plot supports the claim that, in general, the housing prices increase with square footage, at least up to 4000 sq ft. At this point, the data because highly variable suggesting another factor is at play.
+The plot supports the claim that, in general, the housing prices increase with square footage, at least up to 4000 sq ft. Higher than this point, the data because highly variable suggesting another factor is at play.
 
 ### Claim 2: Newer houses are priced higher.
-It is not obvious in the plot that newer prices are priced higher. I would say that the plot does not support this data
+It is not obvious in the plot that newer prices are priced higher. I would say that the plot does not support this data. Many of the newer homes (yellower) appear to be very average for their area, as in, right on the trend line. This suggest that newer homes represent the base prince and older homes can either increase in value (if they have a nice historic character and are maintained), or decrease in value (their style falls out of fashion or are not kept in good repair)
+
 ### Claim 3: Bigger and more expensive houses tend to be newer ones than smaller and cheaper ones.
 The biggest and most expensive homes do appear to be mostly built between 1975-2000, but there are also also many newer homes that are very cheap. Therefore I think it would be more accurate to say that the biggest and most expensive homes are rarely *older* than 25 years.
 
